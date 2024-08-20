@@ -49,3 +49,12 @@ def lambda_handler(event, context):
                     'message': f'Expenses stored with ExpenseId {expense_id}'
                 })
             }
+
+        except Exception as e:
+            return {
+                    'statusCode': 500,
+                    'body': json.dumps({
+                        'status': 'error',
+                        'message': str(e)
+                    })
+                }
