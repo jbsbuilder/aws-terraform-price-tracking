@@ -1,5 +1,5 @@
 resource "aws_dynamodb_table" "basic-dynamodb-table" {
-  name           = "GameScores"
+  name           = "ItemPrice"
   billing_mode   = "PROVISIONED"
   read_capacity  = 20
   write_capacity = 20
@@ -7,18 +7,28 @@ resource "aws_dynamodb_table" "basic-dynamodb-table" {
   range_key      = "GameTitle"
 
   attribute {
-    name = "UserId"
+    name = "VendorName"
     type = "S"
   }
 
   attribute {
-    name = "GameTitle"
+    name = "ItemDescitption"
     type = "S"
   }
 
   attribute {
-    name = "TopScore"
+    name = "ItemPrice"
+    type = "S"
+  }
+
+  attribute {
+    name = "InvoiceReceiptID"
     type = "N"
+  }
+
+  attribute {
+    name = "InvoiceDate"
+    type = "S"
   }
 
   ttl {
@@ -27,17 +37,17 @@ resource "aws_dynamodb_table" "basic-dynamodb-table" {
   }
 
   global_secondary_index {
-    name               = "GameTitleIndex"
-    hash_key           = "GameTitle"
-    range_key          = "TopScore"
+    name               = "PriceIndexGSI"
+    hash_key           = "ItemDesciption"
+    range_key          = "ItemPrice"
     write_capacity     = 10
     read_capacity      = 10
     projection_type    = "INCLUDE"
-    non_key_attributes = ["UserId"]
+    non_key_attributes = ["InvoiceDate", "InvoiceReceiptID"]
   }
 
   tags = {
-    Name        = "dynamodb-table-1"
+    Name        = "PriceTrackingTable""
     Environment = "production"
   }
 }
